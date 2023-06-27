@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.CouponMapper">
+
+    <sql id="CouponColumns">
+        COUPON_ID;
+        MEMBER_ID;
+        COUPON_NAME;
+        COUPON_CONTENT;
+        COUPON_PRICE;
+        COUPON_MIN_ORDER_PRICE;
+        COUPON_EXPIRE;
+        RESTAURANT_ID;
+    </sql>
+
+    <select id="getAllCoupon" parameterType="string" resultType="CouponDto">
+        SELECT
+        *
+        FROM
+        coupon
+        WHERE
+        MEMBER_ID = #{memberId};
+    </select>
+
+    <select id="getCanUseCoupon" parameterType="map" resultType="CouponDto">
+        SELECT *
+        FROM coupon
+        WHERE MEMBER_ID = #{memberId}
+        AND RESTAURANT_ID = #{restaurantId}
+        AND COUPON_MIN_ORDER_PRICE &lt;= #{price}
+    </select>
+
+    <insert id="insertCoupon" parameterType="CouponDto">
+        INSERT INTO coupon (MEMBER_ID, COUPON_NAME, COUPON_CONTENT, COUPON_PRICE, COUPON_MIN_ORDER_PRICE, COUPON_EXPIRE, RESTAURANT_ID)
+        VALUES (#{memberId}, #{couponName}, #{couponContent}, #{couponPrice}, #{couponMinOrderPrice}, #{couponExpire}, #{restaurantId})
+    </insert>
+
+    <delete id="deleteCoupon" parameterType="Long">
+        DELETE
+        FROM coupon
+        WHERE COUPON_ID = #{couponId}
+    </delete>
+
+
+
+
+
+</mapper>

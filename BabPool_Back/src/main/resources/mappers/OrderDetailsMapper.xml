@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.OrderDetailsMapper">
+    <select id="getOrderStatusCounts" parameterType="Long" resultType="OrderDetailCurrentResponseDto">
+        SELECT
+            COALESCE(SUM(ORDERDETAILS_STATUS = 'complete'), 0) AS complete_count,
+            COALESCE(SUM(ORDERDETAILS_STATUS = 'cooking'), 0) AS cooking_count,
+            COALESCE(SUM(ORDERDETAILS_STATUS = 'in delivery'), 0) AS in_delivery_count,
+            COALESCE(SUM(ORDERDETAILS_STATUS = 'cancel'), 0) AS cancel_count,
+            SUM(CASE WHEN ORDERDETAILS_STATUS = 'complete' THEN ORDERDETAILS_PRICE ELSE 0 END) AS complete_money
+        FROM
+            orderdetails
+        WHERE
+            restaurant_id = #{restaurantId}
+        AND
+            DATE(ORDERDETAILS_DATE) = CURDATE()
+    </select>
+
+    <select id="getOrderDetailsByDate" parameterType="OrderDetailsRequestDto" resultType="OrderDetailsResponseDto">
+        SELECT
+            ord.MEMBER_ID,
+            ods.ORDERS_ID,
+            ods.RESTAURANT_ID,
+            ods.ORDERDETAILS_DATE,
+            ods.ORDERDETAILS_PRICE,
+            ods.ORDERDETAILS_COMMENT,
+            ods.ORDERDETAILS_ADDRESS,
+            ods.ORDERDETAILS_RIDER_COMMENT,
+            ods.ORDERDETAILS_TIP,
+            ods.ORDERDETAILS_STATUS,
+            ods.ORDERDETAILS_TID,
+            ods.ORDERDETAILS_OID,
+            ods.ORDERDETAILS_COUPON,
+            ods.ORDERDETAILS_POINT,
+            ods.ORDERDETAILS_EXTRAREQUIREMENT
+        FROM
+            orderdetails AS ods
+        INNER JOIN
+                orders AS ord
+        ON
+            ods.ORDERS_ID = ord.ORDERS_ID
+        WHERE
+            (ods.ORDERDETAILS_STATUS = "complete" OR ods.ORDERDETAILS_STATUS = "cancel" OR ods.ORDERDETAILS_STATUS = "refund")
+        AND
+            DATE(ods.ORDERDETAILS_DATE) BETWEEN #{startDate} AND #{endDate}
+        AND
+            restaurant_Id = #{restaurantId}
+        ORDER BY
+            ORDERDETAILS_DATE
+        LIMIT #{limit}
+        OFFSET #{offset}
+    </select>
+
+    <insert id="addOrderDetails" parameterType="OrderDetails">
+        INSERT INTO orderdetails (
+        ORDERS_ID,
+        RESTAURANT_ID,
+        ORDERDETAILS_DATE,
+        ORDERDETAILS_PRICE,
+        ORDERDETAILS_COMMENT,
+        ORDERDETAILS_RIDER_COMMENT,
+        ORDERDETAILS_TIP,
+        ORDERDETAILS_STATUS,
+        ORDERDETAILS_ADDRESS,
+        ORDERDETAILS_TID,
+        ORDERDETAILS_OID,
+        ORDERDETAILS_COUPON,
+        ORDERDETAILS_EXTRAREQUIREMENT,
+        ORDERDETAILS_POINT
+        )
+        VALUES (
+        #{ordersId},
+        #{restaurantId},
+        #{orderDetailsDate},
+        #{orderDetailsPrice},
+        #{orderDetailsComment},
+        #{orderDetailsRiderComment},
+        #{orderDetailsTip},
+        #{orderDetailsStatus},
+        #{orderDetailsAddress},
+        #{orderDetailsTID},
+        #{orderDetailsOID},
+        #{orderDetailsCoupon},
+        #{orderDetailsExtrareQuireMent},
+        <choose>
+            <when test="orderDetailsPoint == null or orderDetailsPoint.isEmpty()">
+                0
+            </when>
+            <otherwise>
+                #{orderDetailsPoint}
+            </otherwise>
+        </choose>
+        )
+    </insert>
+
+
+    <select id="getOrderDetailsByCurDateAndNew" parameterType="map" resultType="OrderDetailsResponseDto">
+        SELECT
+            ord.MEMBER_ID,
+            ods.ORDERS_ID,
+            rst.RESTAURANT_NAME,
+            ods.ORDERDETAILS_DATE,
+            ods.ORDERDETAILS_PRICE,
+            ods.ORDERDETAILS_COMMENT,
+            ods.ORDERDETAILS_ADDRESS,
+            ods.ORDERDETAILS_RIDER_COMMENT,
+            ods.ORDERDETAILS_TIP,
+            ods.ORDERDETAILS_TID,
+            ods.ORDERDETAILS_STATUS,
+            ods.ORDERDETAILS_PT,
+            ods.ORDERDETAILS_COUPON,
+            ods.ORDERDETAILS_POINT,
+            ods.ORDERDETAILS_EXTRAREQUIREMENT
+        FROM
+            orderdetails AS ods
+            INNER JOIN orders AS ord ON ods.ORDERS_ID = ord.ORDERS_ID
+            INNER JOIN restaurant AS rst ON ods.RESTAURANT_ID = rst.RESTAURANT_ID
+        WHERE
+            ods.RESTAURANT_ID = #{restaurantId}
+            AND ods.ORDERDETAILS_STATUS = #{status}
+            AND DATE(ods.ORDERDETAILS_DATE) = CURDATE()
+    </select>
+
+    <update id="updateOrderStatusToCooking" parameterType="OrderStatusDto">
+        UPDATE orderdetails
+        <trim prefix="SET" suffixOverrides=",">
+            orderdetails_Status = #{orderDetailsStatus},
+            <if test="orderDetailsPT != null">
+                orderdetails_PT = #{orderDetailsPT},
+            </if>
+        </trim>
+        WHERE orders_Id = #{ordersId}
+    </update>
+
+    <select id="getMemberOrderList" parameterType="map" resultType="OrderReceiptDto">
+        <![CDATA[
+            SELECT DISTINCT o.*, od.*, r.restaurant_name, o.ORDERS_REVIEW
+            FROM orders o
+            INNER JOIN orderdetails od ON o.orders_id = od.orders_id
+            INNER JOIN restaurant r ON r.restaurant_id = od.restaurant_id
+            WHERE o.member_id = #{memberId}
+            GROUP BY o.orders_id, o.ORDERS_REVIEW, r.restaurant_name;
+          ]]>
+    </select>
+
+    <select id="getMenuListByOrderId" parameterType="map" resultType="OrderReceiptDto">
+        <![CDATA[
+            SELECT o.*, od.*, om.*, os.*, r.restaurant_name, m.menu_name, o.ORDERS_REVIEW
+                FROM orders o
+                INNER JOIN orderdetails od ON o.orders_id = od.orders_id
+                INNER JOIN ordermenu om ON o.orders_id = om.orders_id
+                LEFT JOIN ordermenusub os ON om.ordermenu_id = os.ordermenu_id
+                INNER JOIN restaurant r ON r.restaurant_id = od.restaurant_id
+                INNER JOIN menu m ON m.menu_id = om.menu_id
+                WHERE o.orders_id = #{ordersId};
+
+          ]]>
+    </select>
+
+    <select id="findRestaurantNameByOrdersId" parameterType="Long" resultType="RestaurantDto">
+        SELECT r.restaurant_Name
+        FROM orderdetails od
+                 JOIN restaurant r ON od.restaurant_Id = r.restaurant_Id
+        WHERE od.orders_Id = #{ordersId};
+    </select>
+
+    <select id="findByIdForAll" resultType="OrderDetailsDto">
+        SELECT *
+        FROM orderdetails
+        WHERE orders_id = #{ordersId}
+    </select>
+</mapper>

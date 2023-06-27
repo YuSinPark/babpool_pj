@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+.signup-form {
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+.signup-form h1 {
+    font-size: 32px; color: #000000;
+    text-align: center;
+    margin-bottom: 60px;
+}
+.sign-area {
+    width: 400px; position: relative;
+    margin-top: 20px;
+    display: flex;
+}
+.sign-area:first-child {margin-top: 0;}
+.sign-area input {
+    width: 100%;
+    padding: 20px 10px 10px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #999;
+    font-size: 18px; color: #050505;
+    outline: none;
+}
+.sign-area label {
+    position: absolute; left: 10px; top: 15px;
+    font-size: 18px; color: #999;
+    transition: top .5s ease;
+}
+.sign-area input:focus + label,
+.sign-area input:valid + label {
+    top: -2px;
+    font-size: 13px; color: #155cea;
+}
+.check-password {
+    font-size: 20px; color: red;
+}
+
+.btn-dup {
+    display: flex;
+}
+.btn-dup button{
+    width: 90px; height: 50px;
+    background: #df9008;
+    color: #fff;
+    font-size: 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+}

@@ -1,0 +1,96 @@
+.coupon-body {
+    height: 100vh;
+    background-color: hsla(0, 0%, 100%, 0.44);
+}
+
+.coupon-number {
+    display: flex;
+    padding: 3%;
+    font-size: calc(5px + 2vmin);
+    padding-bottom: 10%;
+}
+
+.coupon-code-input {
+    font-size: calc(8px + 2vmin)
+}
+
+.coupon-code-submit {
+
+    font-size: calc(8px + 2vmin);
+
+}
+
+.coupon-item {
+    /* background-image: url('/src/img/coupon.png'); */
+    width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    padding: 4%;
+    display: flex;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.11);
+    background-color: rgba(96, 198, 232, 0.146);
+    border-radius: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.204);
+    margin-bottom: 1%;
+}
+
+
+
+
+.coupon-item-div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    font-size: calc(9px + 2vmin);
+
+
+
+}
+
+.coupon-item-text {
+    width: 100%;
+    padding-left: 4%;
+
+
+}
+
+.coupon-item-text2,
+.coupon-item-expire {
+
+
+    display: flex;
+    align-items: start;
+    font-size: calc(4px + 2vmin);
+    text-align: start;
+    font-weight: 600;
+
+}
+
+.coupon-item-expire {}
+
+.coupon-item-text2 div {
+
+    padding-bottom: 2%;
+    padding-right: 2%;
+
+}
+
+.coupon-item-text-name {
+
+    font-size: calc(10px + 2vmin);
+    padding-right: 2%;
+    font-weight: 800;
+    color: rgb(0, 0, 0);
+
+}
+
+.coupon-item-text-time {
+
+    font-size: calc(4px + 2vmin);
+    opacity: 0.5;
+
+}
+
+.coupon-store {
+    padding-right: 3%;
+}

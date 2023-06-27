@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.MemberMapper">
+
+    <sql id ="memberColumns">
+        MEMBER_ID,
+        MEMBER_PASSWORD,
+        MEMBER_PHONE,
+        MEMBER_EMAIL,
+        MEMBER_POINT,
+        MEMBER_JOIN_DATE,
+        MEMBER_NICKNAME,
+        MEMBER_NAME,
+        MEMBER_ISWITHDRAW,
+        MEMBER_ROLE,
+        MEMBER_REFRESHTOKEN,
+        MEMBER_SOCIALTYPE,
+        MEMBER_FIREBASETOKEN
+    </sql>
+
+    <!--회원가입-->
+    <insert id="signup" parameterType="Member">
+        INSERT INTO member(
+        <include refid="memberColumns"/>
+        ) VALUES (
+        #{memberId},
+        #{memberPassword},
+        #{memberPhone},
+        #{memberEmail},
+        #{memberPoint},
+        #{memberJoinDate},
+        #{memberNickname},
+        #{memberName},
+        #{memberIsWithDraw},
+        #{memberRole},
+        #{memberRefreshToken},
+        #{memberSocialType},
+        #{memberFireBaseToken}
+        )
+    </insert>
+
+    <!--id 중복 확인-->
+    <select id="idCheck" resultType="boolean">
+        SELECT EXISTS (
+        SELECT 1
+        FROM member
+        WHERE MEMBER_ID = #{memberId}
+        )
+    </select>
+
+    <!--아이디로 회원 정보 찾기-->
+    <select id="findById" resultType="Member">
+        SELECT *
+        FROM member
+        WHERE member_id = #{memberId}
+    </select>
+
+    <!--아이디 찾기-->
+    <select id="findMemberId" resultType="Member">
+        SELECT *
+        FROM member
+        WHERE MEMBER_EMAIL = #{memberEmail} AND MEMBER_PHONE = #{memberPhone}
+    </select>
+
+    <!--비밀번호를 변경하기 위한 아이디 찾기-->
+    <select id="checkMemberPw" resultType="MemberResponseDto">
+        SELECT *
+        FROM member
+        WHERE MEMBER_ID = #{memberId} AND MEMBER_EMAIL = #{memberEmail}
+    </select>
+
+    <!--로그인할때 까먹은 비밀번호 변경-->
+    <update id="resetMemberPw" parameterType="map">
+        UPDATE member
+        SET MEMBER_PASSWORD = #{newMemberPassword}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+
+    <!--닉네임이랑 전화번호 추가입력-->
+    <update id="updateMemberPlusInfo" parameterType="map">
+        UPDATE member
+        SET MEMBER_NICKNAME = #{memberNickname}, MEMBER_PHONE = #{memberPhone}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+
+    <!--RefreshToken 으로 회원 정보 찾기-->
+    <select id="findByRefreshToken" resultType="Member">
+        SELECT *
+        FROM member
+        WHERE MEMBER_REFRESHTOKEN = #{memberRefreshToken}
+    </select>
+
+    <!--닉네임 중복 확인-->
+    <select id="NicknameCheck" resultType="boolean">
+        SELECT EXISTS (
+        SELECT 1
+        FROM member
+        WHERE MEMBER_NICKNAME = #{memberNickname}
+        )
+    </select>
+
+    <!--닉네임 바꾸기-->
+    <update id="changeMemberNickname" parameterType="map">
+        UPDATE member
+        SET member_nickname = #{memberNickname}
+        WHERE member_id = #{memberId}
+    </update>
+
+    <!--전화번호 저장-->
+    <update id="updateMemberPhoneNumber" parameterType="map">
+        UPDATE member
+        SET MEMBER_PHONE = #{memberPhone}
+        WHERE member_id = #{memberId}
+    </update>
+
+    <!--비밀번호바꾸기-->
+    <update id="changeMemberPassword" parameterType="map">
+        UPDATE member
+        SET MEMBER_PASSWORD = #{newPassword}
+        WHERE MEMBER_PASSWORD = #{exPassword}
+    </update>
+
+    <!--리프레쉬 토큰 리프레쉬-->
+    <update id="updateRefreshToken" parameterType="map">
+        UPDATE member
+        SET MEMBER_REFRESHTOKEN = #{memberRefreshToken}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+
+    <!--리프레쉬 토큰 DB에서 지우기-->
+    <update id="removeRefreshToken" >
+        UPDATE member
+        SET MEMBER_REFRESHTOKEN = NULL, MEMBER_FIREBASETOKEN = NULL
+        WHERE MEMBER_ID = #{memberId};
+    </update>
+
+    <!--회원 탈퇴-->
+    <update id="Withdrawal" >
+        UPDATE member
+        SET MEMBER_ISWITHDRAW = 1
+        WHERE MEMBER_ID = #{memberId};
+    </update>
+
+    <!--파이어베이스 토큰-->
+    <update id="updateFirebaseToken">
+        UPDATE member
+        SET MEMBER_FIREBASETOKEN = #{memberFireBaseToken}
+        WHERE MEMBER_ID = #{memberId};
+    </update>
+
+    <!--파이어베이스 토큰-->
+    <select id="selectFirebaseTokenByMemberId" parameterType="String">
+        SELECT memberFirebaseToken
+        FROM member
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+
+    <select id="findMemberPhoneByOrdersId" parameterType="Long" resultType="MemberResponseDto">
+        SELECT m.member_phone
+        FROM orders o
+                 JOIN member m ON o.member_id = m.member_id
+        WHERE o.orders_id = #{ordersId};
+    </select>
+
+    <!--orderId로 멤버 찾기-->
+    <select id="findMemberIdByOrdersId" resultType="MemberResponseDto" parameterType="Long">
+    SELECT m.member_point, m.member_id
+    FROM orders o
+    JOIN member m ON o.member_id = m.member_id
+    WHERE o.orders_id = #{ordersId}
+    </select>
+
+    <!--포인트 적립-->
+    <update id="earnPoints">
+        UPDATE member
+        SET MEMBER_POINT = MEMBER_POINT + 100
+        WHERE MEMBER_ID IN (
+            SELECT r.MEMBER_ID
+            FROM review r
+            WHERE LENGTH(r.REVIEW_CONTENT) >= 0
+            AND r.MEMBER_ID = #{memberId}
+        );
+    </update>
+
+    <update id="updatePoint">
+        UPDATE member
+        SET MEMBER_POINT = #{memberPoint}
+        WHERE MEMBER_ID = #{memberId};
+    </update>
+
+</mapper>

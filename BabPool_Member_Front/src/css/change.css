@@ -1,0 +1,50 @@
+.change-body{
+    height: 100vh;
+    background-color: white;
+}
+
+.change-title{
+    opacity: 0.5;
+    font-size: calc(9px + 2vmin);
+    padding: 5%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.437);
+    margin-bottom: 3%;
+}
+.change-contents {
+    padding: 5%;
+ 
+}
+.change-contents-item{
+    padding-bottom: 2%;
+}
+
+.change-contents-item input{
+    border-radius: 20px;
+    padding: 3%;
+    border: 1px solid rgba(124, 160, 199, 0.529);
+    margin-left: 4%;
+  
+}
+.change-contents-item ::placeholder{
+    opacity: 0.6;
+}
+
+.change-contents-btn button{
+    background-color: rgba(116, 195, 229, 0.274);
+    border: none;
+    padding: 3%;
+    margin-top: 10%;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.604);
+    border-radius: 20px;
+}
+
+
+.change-check-btn{
+    background-color: rgba(116, 195, 229, 0.413);
+    border: none;
+    padding: 2%;
+    font-weight: 500;
+    color: rgba(0, 1, 2, 0.466);
+    
+}

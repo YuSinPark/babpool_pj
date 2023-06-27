@@ -1,0 +1,235 @@
+.review-body {
+    height: 100vh;
+    background-color: rgb(255, 255, 255);
+  
+}
+
+.review-number {
+    display: flex;
+    padding: 3%;
+    font-size: calc(5px + 2vmin);
+    padding-bottom: 10%;
+}
+
+.review-code-input {
+    font-size: calc(8px + 2vmin)
+}
+
+.review-code-submit {
+
+    font-size: calc(8px + 2vmin);
+
+}
+
+.review-top-nav{
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.review-top-nav-store{
+    display: flex;
+
+
+}
+
+
+
+
+.review-item {
+    width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    padding: 4%;
+    display: flex;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.11);
+    border-radius: 20px;
+}
+
+
+
+
+.review-item-div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    font-size: calc(9px + 2vmin);
+
+
+
+}
+
+.review-item-rating-date{
+    display: flex;
+    align-items: center;
+    padding-bottom: 5%;
+    
+}
+
+.review-item-date{
+    font-size: calc(5px + 2vmin);
+
+    
+}
+
+.review-item-text {
+    width: 100%;
+
+
+}
+
+.review-item-text2 {
+
+
+    display: flex;
+    align-items: start;
+    font-size: calc(4px + 2vmin);
+    text-align: start;
+    padding-bottom: 3%;
+
+}
+
+.review-item-text-store {
+    font-size: calc(8px + 2vmin);
+    font-weight: 700;
+    color: rgb(0, 0, 0);
+}
+
+.review-item-rating {
+    font-size: calc(5px + 2vmin);
+    font-weight: 700;
+    color: rgb(255, 225, 0);
+    padding-right: 3%;
+
+}
+
+.review-item-photo {
+    padding-bottom: 2%;
+}
+
+.review-item-content {
+    font-size: calc(7px + 2vmin);
+    padding-top: 4%;
+    padding-bottom: 5%;
+    color: rgb(0, 0, 0);
+}
+
+.review-item-name {
+
+    font-size: calc(5px + 2vmin);
+    font-weight: 600;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    width: fit-content;
+    border: 1px solid rgba(128, 128, 128, 0.317);
+    border-radius: 20px;
+    padding: 2%;
+
+}
+
+.review-item-text-NickName {
+    font-size: calc(8px + 2vmin);
+    font-weight: 700;
+    color: black;
+}
+
+.review-comment {
+
+    padding-top: 5%;
+}
+
+.review-comment-owner{
+    font-size: calc(5px + 2vmin);
+}
+
+.review-comment-content {
+
+
+    font-size: calc(4px + 2vmin);
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    width: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.317);
+    border-radius: 20px;
+    padding: 3%;
+    margin-top: 5%;
+
+
+}
+
+
+.review-store {
+    padding-right: 3%;
+}
+
+.review-list {
+    min-height: 100vh;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+}
+
+.write-review-body{
+    height: 100vh;
+    background-color: white;
+}
+
+.write-review-title{
+    opacity: 0.5;
+    font-size: calc(7px + 2vmin);
+    padding: 5%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.437);
+    margin-bottom: 3%;
+}
+.write-review-rating{
+    text-align: start;
+    padding: 5%;
+    font-size: calc(15px + 2vmin);
+    padding-top: 0;
+}
+.write-review-rating-btn {
+   display: flex;
+   padding-top: 1%;
+}
+.write-review-rating-btn div{
+    margin-right: 4%;
+    padding: 1%;
+    opacity: 0.4;
+ 
+}
+.write-review-text{
+    padding: 5%;
+  
+}
+.write-review-text textarea {
+    font-size: calc(12px + 2vmin);
+    border: 1px solid rgba(128, 128, 128, 0.413);
+    border-radius: 20px;
+    padding: 10px;
+    box-sizing: border-box; /* 추가된 속성 */
+  }
+  
+
+.write-review-btn button{
+    background-color: rgba(116, 195, 229, 0.877);
+    border: none;
+    padding: 3%;
+    margin-top: 5%;
+    font-weight: 600;
+    color: rgb(240, 248, 255);
+}
+
+.write-review-name{
+    padding-left: 5%;
+    padding-top: 4%;
+    font-size: calc(10px + 2vmin);
+    font-weight: 600;
+}
+
+.write-review-date{
+    padding-left: 5%;
+    padding-top: 2%;
+    padding-bottom: 5%;
+    opacity: 0.7;
+    font-size: calc(5px + 2vmin);
+}
+

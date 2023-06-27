@@ -1,0 +1,54 @@
+.findId{
+    background-color: white;
+    height: 100vh;
+
+}
+
+.findid-title {
+    opacity: 0.5;
+    font-size: calc(9px + 2vmin);
+    padding: 5%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.437);
+    margin-bottom: 3%;
+}
+.findid-contents {
+    padding: 5%;
+}
+.findid-contents-item{
+    padding-bottom: 2%;
+}
+
+.findid-contents-item img{
+    padding-right: 2%;
+}
+.findid-contents-item input{
+    border-radius: 20px;
+    padding: 4%;
+    border: 1px solid rgba(124, 160, 199, 0.529);
+    margin-left: 4%;
+}
+
+.findid-contents-item ::placeholder{
+    opacity: 0.6;
+}
+
+.findid-contents-btn button{
+    background-color: rgba(116, 195, 229, 0.877);
+    border: none;
+    padding: 3%;
+    margin-top: 5%;
+    font-weight: 600;
+    color: rgb(240, 248, 255);
+}
+
+.goToLogin{
+    display: inline-block;
+    background-color: rgba(116, 195, 229, 0.877);
+    border: none;
+    padding: 3%;
+    margin-top: 5%;
+    margin-right: 20px;
+    font-weight: 600;
+    color: rgb(240, 248, 255);
+    font-size: calc(6px + 2vmin);
+}
