@@ -1,0 +1,41 @@
+table {
+  border-collapse: collapse;
+  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  }
+  
+table th, table td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+  
+table th {
+  background-color: rgb(184, 184, 184);
+  color: rgb(0, 0, 0);
+}
+
+.menu-details-header-wrapper {
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.menu-details-header {
+  display: flex;
+  align-items: right;
+  flex-shrink: 1;
+}
+
+.add-menu-btn {
+  background-color: rgb(10, 79, 170);
+  color: white;
+  font-size: 20px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}

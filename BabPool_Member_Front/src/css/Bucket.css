@@ -1,0 +1,144 @@
+.bucket-body {
+    width: 100vw;
+    height: 100vh;
+    background-color: hsl(0, 0%, 100%);
+    overflow: scroll;
+}
+
+.bucket-top-nav{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.bucket-restaurant{
+
+    font-weight: 700;
+    font-size: calc(6px + 2vmin);
+    display: flex;
+    padding: 5%;
+    padding-bottom: 5%;
+}
+.bucket-restaurant div:nth-child(2){
+    text-align: center;
+    align-items: center;
+    padding-top: 1%;
+    padding-left: 2%;
+}
+.bucket-cart-item{
+ padding: 5%;
+ padding-bottom: 7%;
+}
+
+
+
+.bucket-cart-name{
+    font-weight: 700;
+    padding-bottom: 4%;
+}
+
+.bucket-cart-pricesum-option-div{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10%;
+    padding-bottom: 10%;
+
+}
+
+.bucket-cart-price{
+    color: gray;
+    font-size: calc(6px + 2vmin);
+}
+
+.bucket-cart-option{
+    color: gray;
+    font-size: calc(6px + 2vmin);
+
+}
+
+.bucket-cart-priceSum{
+   
+    font-size: calc(7px + 2vmin)
+}
+
+.bucket-cart{
+    background-color: rgba(130, 195, 236, 0.836);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(128, 128, 128, 0.462);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: calc(8px + 2vmin);
+    font-weight: 500;
+ 
+}
+.bucket-cart div:first-child{
+    background-color: rgb(255, 255, 255);
+    border-radius: 50px;
+    padding: 2%;
+    font-weight: 400;
+    border: 1px solid rgba(128, 128, 128, 0.574);
+    font-size: small;
+
+}
+.bucket-cart div:nth-child(2){
+
+    font-weight: 700;
+    padding-left: 6%;
+}
+.bucket-cart div:last-child{
+
+    font-size: calc(7px + 2vmin);
+    font-weight: 600;
+
+}
+
+.bucket-cart-option-change{
+    display: flex;
+    justify-content: flex-end;
+    font-size: calc(6px + 2vmin);
+}
+
+.bucket-cart-option-change span{
+
+ padding-left: 10%;
+ padding-right: 10%;
+
+}
+.bucket-plus-menu{
+
+    text-align: center;
+    padding-top: 7%;
+ 
+  
+}
+.priceSum{
+    
+    padding-bottom: 7%;
+}
+.bucket-check-cart{
+    padding-bottom: 20%;
+    padding-top: 10%;
+    font-size: calc(6px + 2vmin);
+}
+.bucket-check-cart div{
+    display: flex;
+    justify-content: space-between;
+    padding: 1%;
+    
+}
+.bucket-bottom-div{
+    padding: 3%;
+
+}
+
+.empty-cart{
+    position: fixed;
+    top: 35%;
+    left: 20%;
+    right: 0;
+    opacity: 0.5;
+}

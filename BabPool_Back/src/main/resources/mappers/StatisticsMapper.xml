@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.StatisticsMapper">
+
+    <select id="getWeeklyStatistics" parameterType="Long" resultType="StatisticsResponseDto">
+        SELECT
+            d.day_name,
+            COALESCE(s.daily_count, 0) AS daily_count,
+            COALESCE(s.daily_money, 0) AS daily_money
+        FROM
+            (
+                SELECT '월요일' AS day_name
+                UNION ALL SELECT '화요일'
+                UNION ALL SELECT '수요일'
+                UNION ALL SELECT '목요일'
+                UNION ALL SELECT '금요일'
+                UNION ALL SELECT '토요일'
+                UNION ALL SELECT '일요일'
+            ) AS d
+                LEFT JOIN
+            (
+                SELECT
+                    CASE WEEKDAY(ORDERDETAILS_DATE)
+                        WHEN 0 THEN '월요일'
+                        WHEN 1 THEN '화요일'
+                        WHEN 2 THEN '수요일'
+                        WHEN 3 THEN '목요일'
+                        WHEN 4 THEN '금요일'
+                        WHEN 5 THEN '토요일'
+                        WHEN 6 THEN '일요일'
+                        END AS day_name,
+                    IFNULL(COUNT(*), 0) AS daily_count,
+                    IFNULL(SUM(ORDERDETAILS_PRICE), 0) AS daily_money
+                FROM
+                    orderdetails
+                WHERE
+                    YEARWEEK(ORDERDETAILS_DATE, 1) = YEARWEEK(CURRENT_DATE(), 1)
+                  AND RESTAURANT_ID = #{restaurantId}
+                  AND ORDERDETAILS_STATUS = 'complete'
+                GROUP BY
+                    WEEKDAY(ORDERDETAILS_DATE), day_name
+            ) AS s ON d.day_name = s.day_name
+        ORDER BY
+            CASE d.day_name
+                WHEN '월요일' THEN 1
+                WHEN '화요일' THEN 2
+                WHEN '수요일' THEN 3
+                WHEN '목요일' THEN 4
+                WHEN '금요일' THEN 5
+                WHEN '토요일' THEN 6
+                WHEN '일요일' THEN 7
+                END;
+    </select>
+
+    <select id="getLastWeekStatistics" parameterType="Long" resultType="StatisticsResponseDto">
+        SELECT
+            d.day_name,
+            COALESCE(s.daily_count, 0) AS daily_count,
+            COALESCE(s.daily_money, 0) AS daily_money
+        FROM
+            (
+                SELECT '월요일' AS day_name
+                UNION ALL SELECT '화요일'
+                UNION ALL SELECT '수요일'
+                UNION ALL SELECT '목요일'
+                UNION ALL SELECT '금요일'
+                UNION ALL SELECT '토요일'
+                UNION ALL SELECT '일요일'
+            ) AS d
+                LEFT JOIN
+            (
+                SELECT
+                    CASE WEEKDAY(ORDERDETAILS_DATE)
+                        WHEN 0 THEN '월요일'
+                        WHEN 1 THEN '화요일'
+                        WHEN 2 THEN '수요일'
+                        WHEN 3 THEN '목요일'
+                        WHEN 4 THEN '금요일'
+                        WHEN 5 THEN '토요일'
+                        WHEN 6 THEN '일요일'
+                        END AS day_name,
+                    IFNULL(COUNT(*), 0) AS daily_count,
+                    IFNULL(SUM(ORDERDETAILS_PRICE), 0) AS daily_money
+                FROM
+                    orderdetails
+                WHERE
+                    YEARWEEK(ORDERDETAILS_DATE, 1) = YEARWEEK(CURRENT_DATE(), 1) - 1
+                  AND RESTAURANT_ID = #{restaurantId}
+                  AND ORDERDETAILS_STATUS = 'complete'
+                GROUP BY
+                    WEEKDAY(ORDERDETAILS_DATE), day_name
+            ) AS s ON d.day_name = s.day_name
+        ORDER BY
+            CASE d.day_name
+                WHEN '월요일' THEN 1
+                WHEN '화요일' THEN 2
+                WHEN '수요일' THEN 3
+                WHEN '목요일' THEN 4
+                WHEN '금요일' THEN 5
+                WHEN '토요일' THEN 6
+                WHEN '일요일' THEN 7
+                END;
+    </select>
+
+    <select id="findMonthSalesDataByRestaurantId" resultType="MonthlyStatisticsResponseDto">
+        SELECT
+            m.MONTH AS monthName,
+            COALESCE(s.TOTAL_COUNT, 0) AS MONTHLY_COUNT,
+            COALESCE(s.TOTAL_MONEY, 0) AS MONTHLY_MONEY
+        FROM
+            (
+                SELECT 1 AS MONTH UNION ALL
+                SELECT 2 UNION ALL
+                SELECT 3 UNION ALL
+                SELECT 4 UNION ALL
+                SELECT 5 UNION ALL
+                SELECT 6 UNION ALL
+                SELECT 7 UNION ALL
+                SELECT 8 UNION ALL
+                SELECT 9 UNION ALL
+                SELECT 10 UNION ALL
+                SELECT 11 UNION ALL
+                SELECT 12
+            ) AS m
+                LEFT JOIN
+            (
+                SELECT
+                    MONTH(ORDERDETAILS_DATE) AS MONTH,
+                    COUNT(*) AS TOTAL_COUNT,
+                    SUM(ORDERDETAILS_PRICE) AS TOTAL_MONEY
+                FROM
+                    orderdetails
+                WHERE
+                    RESTAURANT_ID = #{restaurantId}
+                  AND YEAR(ORDERDETAILS_DATE) = #{year}
+                  AND ORDERDETAILS_STATUS = 'complete'
+                GROUP BY
+                    MONTH(ORDERDETAILS_DATE)
+            ) AS s ON m.MONTH = s.MONTH
+        ORDER BY
+            m.MONTH;
+    </select>
+
+</mapper>

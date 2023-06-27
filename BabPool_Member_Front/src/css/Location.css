@@ -1,0 +1,122 @@
+.location-body{
+    height: 100vh;
+    padding: 3%;
+    background-color: transparent;
+}
+
+.location-header-nav{
+    padding-top: 5%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: calc(13px + 2vmin);
+    font-weight: 500;
+    
+
+}
+
+.location-search-div{
+    height: 10%;
+    justify-content: center;
+
+}
+.location-search-form{
+    padding-top: 5%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+
+ 
+}
+
+.location-search-input{
+    width: 90%;
+    padding: 3%;
+    border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.57);
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: calc(7px + 2vmin);
+ 
+}
+
+.location-setting-div{
+    padding: 3%;
+}
+.address-body{
+    height: 100vh;
+    overflow:hidden;
+    box-sizing: border-box;
+    padding: 3%;
+   
+}
+
+.address-div {
+    padding-top: 10%;
+}
+.address-div-title{
+    padding: 2%;
+    font-size: calc(13px + 2vmin);
+    font-weight: 600;
+    padding-bottom: 5%;
+}
+
+.address-div-street{
+    font-size: calc(10px + 2vmin);
+    font-weight: 500;
+    padding-bottom: 5%;
+    padding: 2%;
+}
+.address-form div{
+    padding: 2%;
+
+ 
+}
+.address-form input{
+    padding: 3%;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+    border-radius: 50px;
+    display: block;
+    border: none;
+ 
+}
+
+.address-form-submit input{
+    padding: 3%;
+    border: none;
+    background-color: rgba(130, 183, 236, 0.393);
+    font-weight: 700;
+    color:rgba(0, 0, 0, 0.683)
+   
+}
+
+#map{
+    width: 100%;
+    height: 60vmin;
+}
+
+.address-div {
+ 
+    
+   padding-top: 10%;
+  }
+  
+.address-item{
+    background-color: rgba(173, 216, 230, 0.146);
+    padding: 3%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.275);
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.address-item p{
+    font-size: calc(7px + 2vmin);
+    font-weight: 500;
+}
+
+.address-item div{
+    padding: 4%;
+}
+

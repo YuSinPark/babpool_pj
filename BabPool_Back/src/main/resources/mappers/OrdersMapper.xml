@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.OrdersMapper">
+    <insert id="addOrders" parameterType="Orders">
+        <selectKey keyProperty="ordersId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID() AS ordersId
+        </selectKey>
+        INSERT INTO orders (
+        MEMBER_ID,
+                            ORDERS_REVIEW
+        ) VALUES (
+        #{memberId},
+              0
+        )
+    </insert>
+
+    <select id="findMemberIdByOrdersId" parameterType="Long" resultType="String">
+        SELECT MEMBER_ID
+        FROM orders
+        WHERE ORDERS_ID = #{ordersId}
+    </select>
+
+    <update id="updateReviewStatus" parameterType="ReviewDto">
+        UPDATE orders
+        SET ORDERS_REVIEW = true
+        WHERE ORDERS_ID = #{ordersId};
+    </update>
+</mapper>

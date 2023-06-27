@@ -1,0 +1,85 @@
+.myinfo-body{
+    height: 100vh;
+    background-color: rgb(255, 255, 255);
+    
+}
+
+.myinfo-hello{
+    text-align: center;
+    padding: 8%;
+    font-size: calc(13px + 2vmin);
+    margin-bottom: 2%;
+    background-color: rgba(130, 183, 236, 0.393);
+    
+}
+
+.myinfo-hello :first-child{
+    font-size: calc(4px + 2vmin);
+    padding-bottom: 2%;
+}
+.myinfo-top-div{
+    font-weight: 500;
+    padding: 5%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.192);
+    
+}
+.myinfo-content{
+    padding: 5%;
+    font-size: calc(8px + 2vmin);
+}
+
+.myinfo-nickname{
+    padding-bottom: 5%;
+}
+.nickname-text{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 2%;
+    
+    
+}
+.myinfo-nickname :last-child{
+    font-weight: 400;
+}
+.myinfo-id, .myinfo-email, .myinfo-name, .myinfo-date, .myinfo-point, .myinfo-route{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 5%;
+}
+
+.myinfo-id :last-child,.myinfo-email :last-child,  .myinfo-name :last-child, .myinfo-date :last-child, .myinfo-point :last-child, .myinfo-route :last-child{
+    font-weight: 400;
+}
+
+.myinfo-phone{
+    
+    padding-bottom: 5%;
+}
+
+.phone-text{
+    display: flex;
+    justify-content: space-between;
+}
+
+.phone-text{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 2%;
+    
+    
+}
+
+.myinfo-phone :last-child{
+    font-weight: 400;
+}
+
+.myinfo-btn, .myinfo-btn-out{
+    border: none;
+    padding: 2%;
+    border-radius: 10px;
+    background-color: rgba(130, 183, 236, 0.141);
+    font-size: calc(5px + 2vmin);
+}
+.myinfo-btn{
+    z-index: 1;
+}

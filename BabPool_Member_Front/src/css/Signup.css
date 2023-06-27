@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+.signup-form {
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    overflow:hidden;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+}
+.signup-title{
+    font-size: calc(20px + 2vmin);
+    text-align: center;
+    margin-bottom: 20%;
+}
+.sign-area {
+    /* width: 400px; 
+    margin-top: 20px; */
+    width: 320px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.sign-area:first-child {margin-top: 0;}
+.sign-area input {
+    width: 100%;
+    padding: 20px 10px 10px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #999;
+    font-size: calc(8px + 2vmin);
+    outline: none;
+    z-index: 1;
+}
+.sign-area label {
+    position: absolute; left: 10px; top: 15px;
+    font-size: calc(8px + 2vmin); color: #999;
+    transition: top .5s ease;
+}
+.sign-area input:focus + label,
+.sign-area input:valid + label {
+    top: -2px;
+    font-size: 13px; color: #000000;
+}
+.check-password {
+    font-size: calc(5px + 2vmin); color: red;
+}
+
+.btn-dup {
+    display: flex;
+}
+.btn-dup button{
+    width: 70px; height: 40px;
+    background-color: rgba(130, 183, 236, 0.788);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: calc(6px + 2vmin)
+}

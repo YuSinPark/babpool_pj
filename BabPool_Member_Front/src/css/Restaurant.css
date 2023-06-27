@@ -1,0 +1,99 @@
+.restaurant-item {
+    width: 100%;
+    text-align: center;
+    background-color: rgba(130, 183, 236, 0.393);
+}
+
+#tabContent {
+    height: 100vh;
+}
+
+.restaurant-item-cart {
+    text-align: right;
+
+    font-size: calc(10px + 2vmin);
+    background-color: rgb(255, 255, 255);
+    margin: 3px;
+    margin-right: 5px;
+    border: 0px;
+}
+
+.restaurant-item-restaurantinfo {
+    color: black;
+    text-align: center;
+}
+
+.restaurant-item-restaurantinfo>div {
+    margin: auto;
+    text-align: center;
+    padding-top: 3px;
+}
+
+#restaurant-item-restaurantname {
+    font-size: calc(10px + 2vmin);
+    font-weight: bold;
+    padding-top: 6%;
+}
+
+#restaurant-item-restaurantrating {
+    font-size: calc(8px + 2vmin);
+    color: gold;
+}
+
+#restaurant-item-restaurantreview {
+    font-size: calc(5px + 2vmin);
+    color: rgba(0, 0, 0, 0.449);
+    padding-bottom: 7%;
+
+}
+
+.restaurant-item-order {
+    color: black;
+    width: 40%;
+    padding: 10px;
+    display: inline-block;
+    font-size: calc(5px + 2vmin);
+}
+
+.restaurant-item-order-border {
+    border: 2px solid rgba(130, 183, 236, 0.09);
+}
+
+.restaurant-item-btn {
+    width: 40%;
+    height: 4vh;
+    border: 0;
+    background-color: rgb(255, 255, 255);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.439);
+}
+
+.order-border {
+    text-align: center;
+    width: 100%;
+}
+
+.order-btn {
+    color: black;
+    padding: 10px;
+    border: 0;
+    background-color: rgb(255, 255, 255);
+    width: 50%;
+    font-size: calc(7px + 2vmin);
+}
+
+.order-btn.active {
+    border-bottom-width: 2;
+    border-bottom-color: rgba(130, 183, 236, 0.449);
+    background-Color: rgba(130, 183, 236, 0.09);
+}
+
+.shopping-cart-body {
+    display: inline-block;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: transparent;
+    border: none;
+    z-index: 1;
+
+}

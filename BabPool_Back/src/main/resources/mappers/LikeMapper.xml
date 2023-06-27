@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.LikeMapper">
+
+    <select id="selectLikeForMember" resultType="RestaurantResponseDto">
+        SELECT r.*,
+        (SELECT COUNT(*) FROM review rv WHERE rv.RESTAURANT_ID = r.RESTAURANT_ID) AS review_count,
+        MAX(rd.RD_ID) AS RD_ID, MAX(rd.RD_AREA) AS RD_AREA, MAX(rd.RD_TIME_MIN) AS RD_TIME_MIN, MAX(rd.RD_TIME_MAX) AS RD_TIME_MAX, MAX(rd.RD_TIME_AVG) AS RD_TIME_AVG
+        FROM likes L
+        JOIN restaurant R ON L.RESTAURANT_ID = R.RESTAURANT_ID
+        LEFT JOIN restaurantdelivery rd ON rd.RESTAURANT_ID = r.RESTAURANT_ID
+        LEFT JOIN menu m ON m.RESTAURANT_ID = r.RESTAURANT_ID
+        WHERE L.MEMBER_ID = #{memberId}
+        GROUP BY r.RESTAURANT_ID, r.RESTAURANT_NAME, r.RESTAURANT_CATEGORY, r.RESTAURANT_ADDRESS, r.RESTAURANT_RATING, r.RESTAURANT_MIN_PRICE;
+
+    </select>
+    <insert id="createLikes">
+
+        INSERT INTO likes(
+        MEMBER_ID,
+        RESTAURANT_ID
+        ) VALUES (
+        #{memberId},
+        #{restaurantId}
+        );
+        <selectKey keyProperty="LIKES_ID" resultType="Long" order="AFTER">
+            SELECT LIKES_ID from likes
+            where MEMBER_ID = #{memberId}
+            and RESTAURANT_ID = #{restaurantId}
+            group by likes_id;
+        </selectKey>
+    </insert>
+    <delete id="deleteLikes">
+        DELETE
+        FROM likes
+        WHERE LIKES_ID = #{likesId};
+    </delete>
+    <update id="updateLikeUp">
+        UPDATE restaurant set RESTAURANT_LIKE_COUNT = COALESCE(RESTAURANT_LIKE_COUNT, 0) + 1
+        WHERE RESTAURANT_ID = #{restaurantId};
+    </update>
+    <update id="updateLikeDown">
+        UPDATE restaurant set RESTAURANT_LIKE_COUNT = RESTAURANT_LIKE_COUNT - 1
+        WHERE RESTAURANT_ID = #{restaurantId};
+    </update>
+</mapper>

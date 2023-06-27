@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.SearchMapper">
+
+    <select id="test" parameterType="SearchDto" resultType="SearchDto">
+        select * from search;
+    </select>
+
+    <sql id="searchColumns">
+        SEARCH_COUNT,
+        SEARCH_VALUE,
+        SEARCH_UPDATE
+    </sql>
+
+    <insert id="createSearch" parameterType="SearchDto">
+        INSERT INTO search (SEARCH_VALUE, SEARCH_COUNT, SEARCH_UPDATE)
+        VALUES (#{searchValue}, 1, #{searchUpdate})
+        ON DUPLICATE KEY UPDATE SEARCH_COUNT = SEARCH_COUNT + 1, SEARCH_UPDATE = #{searchUpdate};
+    </insert>
+
+
+    <update id="updateSearch" parameterType="SearchDto">
+        UPDATE search
+        SET SEARCH_COUNT = SEARCH_COUNT + 1
+        WHERE SEARCH_VALUE = #{searchValue};
+
+    </update>
+
+    <select id="selectPopularSortResult" parameterType="SearchDto" resultType="SearchDto">
+        SELECT SEARCH_VALUE, SEARCH_COUNT, SEARCH_UPDATE
+        FROM search
+        ORDER BY SEARCH_COUNT DESC;
+    </select>
+
+</mapper>

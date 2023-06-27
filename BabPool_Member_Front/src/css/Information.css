@@ -1,0 +1,57 @@
+.restaurant-item {
+    width: 98vw;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    font-size: calc(7px + 2vmin);
+    flex-direction: column;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(130, 183, 236, 0.449);
+    text-align: left;
+    padding: 3%;
+    
+}
+
+.restaurant-item-sort {
+    font-size: calc(10px + 2vmin);
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 5%;
+}
+
+.restaurant-item-sort2 {
+    font-size: calc(7px + 2vmin);
+    text-align: left;
+    width: 20%;
+    display: inline-block;
+  
+}
+
+.restaurant-item-sort3 {
+    font-size: calc(7px + 2vmin);
+    text-align: left;
+    width: 30%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.restaurant-item-info {
+    text-align: left;
+    font-size: calc(5px + 2vmin);
+    width: auto;
+    display: inline-block;
+ 
+    padding: 5px;
+}
+
+.restaurant-item-info2 {
+    text-align: left;
+    font-size: calc(5px + 2vmin);
+    width: 70%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#Information {
+    height: 100vh;
+}

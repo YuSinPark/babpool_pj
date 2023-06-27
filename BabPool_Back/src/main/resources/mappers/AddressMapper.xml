@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.AddressMapper">
+
+    <select id="test" parameterType="AddressDto" resultType="AddressDto">
+        select * from address;
+    </select>
+
+    <sql id="addressColumns">
+        MEMBER_ID,
+        ADDRESS,
+        ADDRESS_LATITUDE,
+        ADDRESS_LONGITUDE
+    </sql>
+
+
+    <insert id="createAddress" parameterType="AddressDto">
+        INSERT INTO address (
+        MEMBER_ID, ADDRESS, ADDRESS_LATITUDE, ADDRESS_LONGITUDE
+        ) VALUES (
+        #{memberId},
+        #{address},
+        #{addressLatitude},
+        #{addressLongitude}
+        );
+
+    </insert>
+
+    <update id="updateAddress" parameterType="AddressDto">
+        UPDATE address
+        SET LAST_SAVED_TIME = NOW()
+        WHERE ADDRESS_ID = #{addressId} AND MEMBER_ID = #{memberId};
+    </update>
+
+    <select id="getAllAddress" resultType="AddressDto">
+        SELECT * FROM address WHERE MEMBER_ID=#{memberId}
+    </select>
+
+
+    <select id="getAddress" resultType="AddressDto">
+        SELECT *
+        FROM address
+        WHERE MEMBER_ID = #{memberId}
+        ORDER BY LAST_SAVED_TIME DESC
+        LIMIT 1;
+    </select>
+
+
+    <delete id="deleteAddress">
+        DELETE
+        FROM address
+        WHERE ADDRESS_ID = #{addressId};
+    </delete>
+
+
+</mapper>
+

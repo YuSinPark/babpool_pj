@@ -1,0 +1,73 @@
+.mypage-body{
+    background-color: hsl(0, 0%, 100%);
+    height: 100vh;
+    text-align: center;
+    /* padding:3%; */
+}
+.mypage-myinfo{
+    background-color: rgba(130, 183, 236, 0.393);
+    justify-content: center;
+    padding: 5%;
+    border-radius: 20px;
+    margin: 7%;
+}
+
+.mypage-name{
+
+    font-size: calc(16px + 2vmin);
+    font-weight: 600;
+    padding-bottom: 3%;
+}
+
+.mypage-function-div{
+
+    display: flex;
+    justify-content: space-around;
+    padding:10%
+  
+}
+.mypage-function-div div{
+
+    border-radius: 30px;
+    font-weight: 600;
+    text-align: center;
+    font-size: calc(7px + 2vmin)
+}
+
+.mypage-bottom-div{
+    text-align: start;
+    background-color: rgba(255, 255, 255, 0.706);
+
+}
+.mypage-bottom-div div{
+
+    font-size: calc(6px + 2vmin);
+    padding: 2.5%;
+
+}
+.mypage-bottom-item{
+    display: flex;
+    justify-content: space-between;
+    padding: 3%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.252);
+}
+
+.mypage-login{
+    font-size: calc(13px + 2vmin);
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(255, 255, 255);
+    padding: 10%;
+    color:rgba(128, 128, 128, 0.823);
+    font-weight: 600;
+}
+
+.mypage-nickname{
+    font-size: calc(13px + 2vmin);
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(130, 183, 236, 0.393);
+    padding: 10%;
+    color:rgba(128, 128, 128, 0.823);
+    font-weight: 600;
+}

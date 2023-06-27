@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.RestaurantMapper">
+    <insert id="createRestaurant" parameterType="Restaurant">
+        <selectKey keyProperty="restaurantId" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID() AS restaurantId
+        </selectKey>
+        INSERT INTO restaurant (
+            MEMBER_ID,
+            RESTAURANT_CATEGORY,
+            RESTAURANT_NAME,
+            RESTAURANT_ADDRESS,
+            RESTAURANT_PHONE,
+            RESTAURANT_MIN_PRICE,
+            RESTAURANT_PHOTO,
+            RESTAURANT_CLOSE_DAY,
+            RESTAURANT_LICENSE_NUMBER,
+            RESTAURANT_LATITUDE,
+            RESTAURANT_LONGITUDE,
+            RESTAURANT_STATUS,
+            RESTAURANT_DETAIL_ADDRESS,
+            RESTAURANT_RATING,
+                                RESTAURANT_REPLY
+        ) VALUES (
+                     #{memberId},
+                     #{restaurantCategory},
+                     #{restaurantName},
+                     #{restaurantAddress},
+                     #{restaurantPhone},
+                     #{restaurantMinPrice},
+                     #{restaurantPhoto},
+                     #{restaurantCloseDay},
+                     #{restaurantLicenseNumber},
+                     #{restaurantLatitude},
+                     #{restaurantLongitude},
+                     "N",
+                     #{restaurantDetailAddress},
+                     0,
+                     0
+                 )
+    </insert>
+
+
+    <select id="selectRestaurantDetail" parameterType="Long" resultType="Restaurant">
+        SELECT
+            *
+        FROM
+            restaurant
+        WHERE
+            restaurant_Id = #{restaurantId};
+    </select>
+
+    <update id="updateRestaurant" parameterType="Restaurant">
+        UPDATE restaurant
+
+            <trim prefix="SET" suffixOverrides=",">
+                <if test="restaurantCategory != null">restaurant_Category = #{restaurantCategory},</if>
+                <if test="restaurantName != null">restaurant_Name = #{restaurantName},</if>
+                <if test="restaurantContent != null">restaurant_Content = #{restaurantContent},</if>
+                <if test="restaurantAddress != null">restaurant_Address = #{restaurantAddress},</if>
+                <if test="restaurantPhone != null">restaurant_Phone = #{restaurantPhone},</if>
+                <if test="restaurantMinPrice != null">restaurant_Min_Price = #{restaurantMinPrice},</if>
+                <if test="restaurantPhoto != null">restaurant_Photo = #{restaurantPhoto},</if>
+                <if test="restaurantCloseDay != null">restaurant_Close_Day = #{restaurantCloseDay},</if>
+                <if test="restaurantOrigin != null">restaurant_Origin = #{restaurantOrigin},</if>
+                <if test="restaurantStatus != null">restaurant_Status = #{restaurantStatus}</if>
+            </trim>
+        WHERE
+            restaurant_Id = #{restaurantId}
+    </update>
+
+    <delete id="deleteRestaurant">
+        DELETE
+        FROM restaurant
+        WHERE restaurant_Id = #{restaurantId};
+
+    </delete>
+
+    <select id="getAllRestaurant" parameterType="string" resultType="RestaurantDto">
+        SELECT *
+        FROM restaurant
+        WHERE member_Id = #{memberId};
+    </select>
+    <select id="selectRestaurantInformationsDetail" resultType="RestaurantResponseDto">
+        SELECT r.RESTAURANT_ID,
+               r.MEMBER_ID,
+               r.RESTAURANT_CATEGORY,
+               r.RESTAURANT_NAME,
+               r.RESTAURANT_CONTENT,
+               r.RESTAURANT_ADDRESS,
+               r.RESTAURANT_PHONE,
+               r.RESTAURANT_RATING,
+               r.RESTAURANT_REPLY,
+               r.RESTAURANT_MIN_PRICE,
+               r.RESTAURANT_PHOTO,
+               r.RESTAURANT_LIKE_COUNT,
+               r.RESTAURANT_CLOSE_DAY,
+               r.RESTAURANT_ORIGIN,
+               m.MEMBER_NICKNAME,
+               rd.RD_TIME_MIN,
+               rd.RD_TIME_MAX,
+               rd.RD_TIME_AVG,
+               rd.RD_PICKUP_TIME_MIN,
+               rd.RD_PICKUP_TIME_MAX,
+               rd.RD_PICKUP_TIME_AVG,
+               rd.RD_TIP,
+               lk.LIKES_ID,
+               (SELECT COUNT(*) FROM review re WHERE re.RESTAURANT_ID = r.RESTAURANT_ID) AS reviewCount,
+               (SELECT COUNT(*) FROM orderdetails od WHERE od.RESTAURANT_ID = r.RESTAURANT_ID) AS orderCount
+        FROM restaurant r
+                 LEFT JOIN member m ON r.MEMBER_ID = m.MEMBER_ID
+                 LEFT JOIN restaurantdelivery rd ON r.RESTAURANT_ID = rd.RESTAURANT_ID
+                 LEFT JOIN likes lk ON lk.RESTAURANT_ID = r.RESTAURANT_ID AND lk.MEMBER_ID = #{memberId}
+        WHERE r.RESTAURANT_ID = #{restaurantId}
+        GROUP BY r.RESTAURANT_ID,
+                 r.MEMBER_ID,
+                 r.RESTAURANT_CATEGORY,
+                 r.RESTAURANT_NAME,
+                 r.RESTAURANT_CONTENT,
+                 r.RESTAURANT_ADDRESS,
+                 r.RESTAURANT_PHONE,
+                 r.RESTAURANT_RATING,
+                 r.RESTAURANT_REPLY,
+                 r.RESTAURANT_MIN_PRICE,
+                 r.RESTAURANT_PHOTO,
+                 r.RESTAURANT_LIKE_COUNT,
+                 r.RESTAURANT_CLOSE_DAY,
+                 r.RESTAURANT_ORIGIN,
+                 m.MEMBER_NICKNAME,
+                 rd.RD_TIME_MIN,
+                 rd.RD_TIME_MAX,
+                 rd.RD_TIME_AVG,
+                 rd.RD_PICKUP_TIME_MIN,
+                 rd.RD_PICKUP_TIME_MAX,
+                 rd.RD_PICKUP_TIME_AVG,
+                 rd.RD_TIP,
+                 lk.LIKES_ID;
+    </select>
+
+    <select id="selectRestaurantCategory" parameterType="String" resultType="RestaurantResponseDto">
+        SELECT r.*,
+        (SELECT COUNT(*) FROM review rv WHERE rv.RESTAURANT_ID = r.RESTAURANT_ID) AS review_count,
+        rd.RD_ID, rd.RD_AREA, rd.RD_TIME_MIN, rd.RD_TIME_MAX, rd.RD_TIME_AVG
+        FROM restaurant r
+        LEFT JOIN restaurantdelivery rd ON r.RESTAURANT_ID = rd.RESTAURANT_ID
+        WHERE r.restaurant_Category = #{restaurantCategory} AND r.RESTAURANT_STATUS = 'Y'
+    </select>
+
+    <select id="selectSearchResult" parameterType="String" resultType="RestaurantResponseDto">
+        SELECT r.*,
+        (SELECT COUNT(*) FROM review rv WHERE rv.RESTAURANT_ID = r.RESTAURANT_ID) AS review_count,
+        MAX(rd.RD_ID) AS RD_ID, MAX(rd.RD_AREA) AS RD_AREA, MAX(rd.RD_TIME_MIN) AS RD_TIME_MIN, MAX(rd.RD_TIME_MAX) AS RD_TIME_MAX, MAX(rd.RD_TIME_AVG) AS RD_TIME_AVG
+        FROM restaurant r
+        LEFT JOIN restaurantdelivery rd ON r.RESTAURANT_ID = rd.RESTAURANT_ID
+        LEFT JOIN menu m ON m.RESTAURANT_ID = r.RESTAURANT_ID
+        WHERE r.RESTAURANT_CATEGORY LIKE CONCAT('%', #{searchValue}, '%')
+        OR r.RESTAURANT_NAME LIKE CONCAT('%', #{searchValue}, '%')
+        OR EXISTS (
+        SELECT 1
+        FROM menu m
+        WHERE m.RESTAURANT_ID = r.RESTAURANT_ID
+        AND m.MENU_NAME LIKE CONCAT('%', #{searchValue}, '%') AND r.RESTAURANT_STATUS = 'Y'
+        )
+        GROUP BY r.RESTAURANT_ID, r.RESTAURANT_NAME, r.RESTAURANT_CATEGORY, r.RESTAURANT_ADDRESS, r.RESTAURANT_RATING
+    </select>
+
+    <select id="selectRatingSortResult" parameterType="String" resultType="RestaurantResponseDto">
+        SELECT r.*,
+        (SELECT COUNT(*) FROM review rv WHERE rv.RESTAURANT_ID = r.RESTAURANT_ID) AS review_count,
+        MAX(rd.RD_ID) AS RD_ID,
+        MAX(rd.RD_AREA) AS RD_AREA,
+        MAX(rd.RD_TIME_MIN) AS RD_TIME_MIN,
+        MAX(rd.RD_TIME_MAX) AS RD_TIME_MAX,
+        MAX(rd.RD_TIME_AVG) AS RD_TIME_AVG
+        FROM restaurant r
+        LEFT JOIN restaurantdelivery rd ON rd.RESTAURANT_ID = r.RESTAURANT_ID
+        LEFT JOIN menu m ON m.RESTAURANT_ID = r.RESTAURANT_ID
+        WHERE (r.RESTAURANT_NAME LIKE CONCAT('%', #{searchValue}, '%')
+        OR r.RESTAURANT_CATEGORY LIKE CONCAT('%', #{searchValue}, '%')
+        OR m.MENU_NAME LIKE CONCAT('%', #{searchValue}, '%'))
+        AND r.RESTAURANT_STATUS = 'Y'
+        GROUP BY r.RESTAURANT_ID, r.RESTAURANT_NAME, r.RESTAURANT_CATEGORY, r.RESTAURANT_ADDRESS, r.RESTAURANT_RATING
+        ORDER BY CAST(r.RESTAURANT_RATING AS DECIMAL(3,1)) DESC;
+    </select>
+
+    <select id="selectMinPriceSortResult" parameterType="String" resultType="RestaurantResponseDto">
+        SELECT r.*,
+        (SELECT COUNT(*) FROM review rv WHERE rv.RESTAURANT_ID = r.RESTAURANT_ID) AS review_count,
+        MAX(rd.RD_ID) AS RD_ID,
+        MAX(rd.RD_AREA) AS RD_AREA,
+        MAX(rd.RD_TIME_MIN) AS RD_TIME_MIN,
+        MAX(rd.RD_TIME_MAX) AS RD_TIME_MAX,
+        MAX(rd.RD_TIME_AVG) AS RD_TIME_AVG
+        FROM restaurant r
+        LEFT JOIN restaurantdelivery rd ON rd.RESTAURANT_ID = r.RESTAURANT_ID
+        LEFT JOIN menu m ON m.RESTAURANT_ID = r.RESTAURANT_ID
+        WHERE (r.RESTAURANT_NAME LIKE CONCAT('%', #{searchValue}, '%')
+        OR r.RESTAURANT_CATEGORY LIKE CONCAT('%', #{searchValue}, '%')
+        OR m.MENU_NAME LIKE CONCAT('%', #{searchValue}, '%'))
+        AND r.RESTAURANT_STATUS = 'Y'
+        GROUP BY r.RESTAURANT_ID, r.RESTAURANT_NAME, r.RESTAURANT_CATEGORY, r.RESTAURANT_ADDRESS, r.RESTAURANT_RATING, r.RESTAURANT_MIN_PRICE
+        ORDER BY CAST(r.RESTAURANT_MIN_PRICE AS DECIMAL);
+    </select>
+
+    <select id="selectDeliveryTimeSortResult" parameterType="String" resultType="RestaurantResponseDto">
+        SELECT r.*,
+        (SELECT COUNT(*) FROM review rv WHERE rv.RESTAURANT_ID = r.RESTAURANT_ID) AS review_count,
+        MAX(rd.RD_ID) AS RD_ID,
+        MAX(rd.RD_AREA) AS RD_AREA,
+        MAX(rd.RD_TIME_MIN) AS RD_TIME_MIN,
+        MAX(rd.RD_TIME_MAX) AS RD_TIME_MAX,
+        MAX(rd.RD_TIME_AVG) AS RD_TIME_AVG
+        FROM restaurant r
+        LEFT JOIN restaurantdelivery rd ON rd.RESTAURANT_ID = r.RESTAURANT_ID
+        LEFT JOIN menu m ON m.RESTAURANT_ID = r.RESTAURANT_ID
+        WHERE (r.RESTAURANT_NAME LIKE CONCAT('%', #{searchValue}, '%')
+        OR r.RESTAURANT_CATEGORY LIKE CONCAT('%', #{searchValue}, '%')
+        OR m.MENU_NAME LIKE CONCAT('%', #{searchValue}, '%'))
+        AND r.RESTAURANT_STATUS = 'Y'
+        GROUP BY r.RESTAURANT_ID, r.RESTAURANT_NAME, r.RESTAURANT_CATEGORY, r.RESTAURANT_ADDRESS, r.RESTAURANT_RATING, r.RESTAURANT_MIN_PRICE
+        ORDER BY CAST(MAX(rd.RD_TIME_AVG) AS DECIMAL(3,1));
+    </select>
+
+    <select id="selectDistanceSortResult" parameterType="map" resultType="RestaurantResponseDto">
+        SELECT r.*,
+        (SELECT COUNT(*) FROM review rv WHERE rv.RESTAURANT_ID = r.RESTAURANT_ID) AS review_count,
+        MAX(rd.RD_ID) AS RD_ID,
+        MAX(rd.RD_AREA) AS RD_AREA,
+        MAX(rd.RD_TIME_MIN) AS RD_TIME_MIN,
+        MAX(rd.RD_TIME_MAX) AS RD_TIME_MAX,
+        MAX(rd.RD_TIME_AVG) AS RD_TIME_AVG,
+        6371 * 2 * ASIN(SQRT(
+        POWER(SIN((CAST(#{memberLatitude} AS DECIMAL(10,7)) - ABS(r.RESTAURANT_LATITUDE)) * PI() / 180 / 2), 2) +
+        COS(CAST(#{memberLatitude} AS DECIMAL(10,7)) * PI() / 180) * COS(ABS(r.RESTAURANT_LATITUDE) * PI() / 180) *
+        POWER(SIN((CAST(#{memberLongitude} AS DECIMAL(10,7)) - ABS(r.RESTAURANT_LONGITUDE)) * PI() / 180 / 2), 2)
+        )) AS distance_km
+        FROM restaurant r
+        LEFT JOIN restaurantdelivery rd ON rd.RESTAURANT_ID = r.RESTAURANT_ID
+        LEFT JOIN menu m ON m.RESTAURANT_ID = r.RESTAURANT_ID
+        LEFT JOIN review rv ON m.MENU_ID = rv.MENU_ID
+        WHERE (r.RESTAURANT_NAME LIKE CONCAT('%', #{searchValue}, '%')
+        OR r.RESTAURANT_CATEGORY LIKE CONCAT('%', #{searchValue}, '%')
+        OR m.MENU_NAME LIKE CONCAT('%', #{searchValue}, '%'))
+        AND r.RESTAURANT_STATUS = 'Y'
+        GROUP BY r.RESTAURANT_ID, r.RESTAURANT_NAME, r.RESTAURANT_CATEGORY, r.RESTAURANT_ADDRESS, r.RESTAURANT_RATING, r.RESTAURANT_MIN_PRICE, distance_km
+        ORDER BY distance_km ASC;
+    </select>
+
+    <select id="selectReplySortResult" parameterType="String" resultType="RestaurantResponseDto">
+        SELECT r.*,
+        COUNT(DISTINCT rv.REVIEW_ID) AS review_count,
+        MAX(rd.RD_ID) AS RD_ID,
+        MAX(rd.RD_AREA) AS RD_AREA,
+        MAX(rd.RD_TIME_MIN) AS RD_TIME_MIN,
+        MAX(rd.RD_TIME_MAX) AS RD_TIME_MAX,
+        MAX(rd.RD_TIME_AVG) AS RD_TIME_AVG
+        FROM restaurant r
+        LEFT JOIN restaurantdelivery rd ON rd.RESTAURANT_ID = r.RESTAURANT_ID
+        LEFT JOIN menu m ON m.RESTAURANT_ID = r.RESTAURANT_ID
+        LEFT JOIN review rv ON rv.RESTAURANT_ID = r.RESTAURANT_ID
+        WHERE (r.RESTAURANT_NAME LIKE CONCAT('%', #{searchValue}, '%')
+        OR r.RESTAURANT_CATEGORY LIKE CONCAT('%', #{searchValue}, '%'))
+        AND r.RESTAURANT_STATUS = 'Y'
+        GROUP BY r.RESTAURANT_ID, r.RESTAURANT_NAME, r.RESTAURANT_CATEGORY, r.RESTAURANT_ADDRESS, r.RESTAURANT_RATING, r.RESTAURANT_MIN_PRICE
+        ORDER BY review_count DESC;
+    </select>
+
+    <update id="updateRestaurantStatusByIdList" parameterType="RestaurantStatusRequestDto">
+        UPDATE restaurant
+        SET restaurant_Status = #{restaurantStatus}
+        WHERE restaurant_Id IN
+        <foreach collection="restaurantIdList" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="findMemberIdAndRestaurantNameByRestaurantId" parameterType="Long" resultType="RestaurantFcmDto">
+        SELECT MEMBER_ID, RESTAURANT_NAME
+        FROM restaurant
+        where RESTAURANT_ID = #{restaurantId}
+    </select>
+
+    <update id="updateRestaurantReply" parameterType="ReviewDto">
+        UPDATE restaurant
+        SET RESTAURANT_REPLY = RESTAURANT_REPLY + 1
+        WHERE RESTAURANT_ID = #{restaurantId};
+    </update>
+
+    <update id="updateRestaurantRating" parameterType="ReviewDto">
+        UPDATE restaurant
+        SET RESTAURANT_RATING = CASE
+        WHEN RESTAURANT_RATING = 0 THEN RESTAURANT_RATING + #{reviewRating}
+        ELSE
+        CASE
+        WHEN MOD((((RESTAURANT_RATING * (RESTAURANT_REPLY - 1)) + #{reviewRating})) / (RESTAURANT_REPLY), 1) = 0.5
+        THEN ROUND((((RESTAURANT_RATING * (RESTAURANT_REPLY - 1)) + #{reviewRating})) / (RESTAURANT_REPLY))
+        ELSE FLOOR((((RESTAURANT_RATING * (RESTAURANT_REPLY - 1)) + #{reviewRating})) / (RESTAURANT_REPLY) + 0.5)
+        END
+        END
+        WHERE RESTAURANT_ID = #{restaurantId};
+    </update>
+
+
+
+    <update id="updataRefund">
+        UPDATE orderdetails set ORDERDETAILS_STATUS = "refund"
+        WHERE ORDERS_ID = #{ordersId};
+    </update>
+</mapper>

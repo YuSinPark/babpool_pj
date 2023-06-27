@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+.login-body {
+    font-family: 'Noto Sans KR', sans-serif;
+    text-align: center;
+    height: 100vh;
+    width: 100vw;
+    z-index: 1;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: #ffffff;
+
+
+
+}
+
+
+.logo {
+    padding-top: 20%;
+    padding-bottom: 4%;
+}
+
+.login-text {
+    font-size: calc(20px + 2vmin);
+    padding-bottom: 20%;
+    padding-top: 20%;
+    font-weight: 500;
+
+}
+
+.int-area {
+    margin-top: 13px;
+}
+
+.int-area:first-child {
+    margin-top: 0;
+}
+
+.int-area input {
+
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #99999990;
+    font-size: 18px;
+    color: #000000;
+    outline: none;
+    padding: 3%;
+    width: 80%;
+    z-index: 1;
+
+}
+
+.label-id {
+    position: relative;
+    text-align: start;
+    padding-left: 10%;
+    font-size: 16px;
+    color: gray;
+    transition: top .5s ease;
+    top: -30px;
+    pointer-events: none
+}
+
+.int-area input:focus+.label-id,
+.int-area input:valid+.label-id {
+    top: -70px;
+    font-size: 13px;
+    color: #000000;
+}
+
+.btn-area {
+    margin-top: 13%;
+    text-align: center;
+}
+
+.btn-area button {
+    width: 64%;
+    height: 45px;
+    background-color: rgba(111, 186, 216, 0.334);
+    color: #000000;
+    font-size: calc(10px + 2vmin);
+    border: none;
+    border-radius: 100px;
+    font-weight: 700;
+    cursor: pointer;
+    /* background-image: url('/src/img/coupon.png'); */
+}
+
+.findMember-div {
+
+    cursor: pointer;
+    font-size: calc(4px + 2vmin);
+    align-items: center;
+
+
+
+}
+
+.findMember {
+    display: flex;
+    justify-content: center;
+}
+
+.findMember div {
+    padding: 1%;
+}
+
+.checkMember {
+    margin: 3px;
+    text-align: center;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: calc(6px + 2vmin);
+
+
+}
+
+.login-box {
+
+    padding-top: 5%;
+    text-align: center;
+    padding-bottom: 10%;
+}

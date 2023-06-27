@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.ReviewMapper">
+
+    <insert id="insertReview" parameterType="Review">
+        INSERT INTO review (REVIEW_MENU, ORDERS_ID, MEMBER_ID, REVIEW_RATING, REVIEW_CONTENT, REVIEW_PHOTO, REVIEW_CREATEDATE, REVIEW_MODIFIED_DATE, RESTAURANT_ID)
+        VALUES (#{reviewMenu}, #{ordersId}, #{memberId}, #{reviewRating}, #{reviewContent}, #{reviewPhoto}, #{reviewCreateDate}, #{reviewModifiedDate}, #{restaurantId});
+    </insert>
+
+    <update id="updateReviewStatus" parameterType="map">
+        UPDATE orders o
+        JOIN restaurant r ON o.RESTAURANT_ID = r.RESTAURANT_ID
+        SET o.ORDERS_REVIEW = 1, r.RESTAURANT_REPLY = r.RESTAURANT_REPLY + 1
+        WHERE o.ORDERS_ID = #{ordersId};
+    </update>
+
+
+    <select id="getRestaurantReview" parameterType="long" resultType="ReviewResponseDto">
+        select
+        r.REVIEW_MENU,
+        r.REVIEW_ID,
+        r.MEMBER_ID,
+        r.REVIEW_MENU,
+        r.REVIEW_CONTENT,
+        r.REVIEW_RATING,
+        r.REVIEW_PHOTO,
+        r.REVIEW_CREATEDATE,
+        r.REVIEW_MODIFIED_DATE,
+        m.MEMBER_NICKNAME,
+        rc.REVIEWCOMMENT_CONTENT
+        from
+        review r
+        LEFT JOIN reviewcomment rc on r.REVIEW_ID = rc.REVIEW_ID
+        left join member m on r.MEMBER_ID = m.MEMBER_ID
+        where
+        RESTAURANT_ID =#{restaurantId}
+        group by
+        r.REVIEW_MENU,
+        r.REVIEW_ID,
+        m.MEMBER_ID,
+        r.REVIEW_CONTENT,
+        r.REVIEW_RATING,
+        r.REVIEW_PHOTO,
+        r.REVIEW_CREATEDATE,
+        r.REVIEW_MODIFIED_DATE,
+        m.MEMBER_NICKNAME,
+        rc.REVIEWCOMMENT_CONTENT
+        ORDER BY
+        r.REVIEW_ID DESC;
+    </select>
+
+    <sql id="reviewColumns">
+        REVIEW_ID,
+        ORDERS_ID,
+        REVIEW_MENU,
+        MEMBER_ID,
+        REVIEW_CONTENT,
+        REVIEW_RATING,
+        REVIEW_PHOTO,
+        REVIEW_CREATEDATE,
+        REVIEW_MODIFIED_DATE
+    </sql>
+
+    <select id="getReviewComment" parameterType="String" resultType="ReviewCommentDto">
+        select
+        *
+        from
+        reviewcomment
+        where
+        OWNER_ID = #{ownerId};
+    </select>
+
+    <sql id="reviewcommentColumns">
+        OWNER_ID,
+        REVIEW_ID,
+        REVIEWCOMMENT_CONTENT
+    </sql>
+
+    <insert id="createReviewComment" parameterType="ReviewCommentDto">
+        INSERT INTO reviewcomment(
+        <include refid="reviewcommentColumns"/>
+        )VALUES (
+        #{ownerId},
+        #{reviewId},
+        #{reviewCommentContent}
+        );
+
+    </insert>
+
+    <select id="selectReviewForOwner" parameterType="map" resultType="ReviewResponseDto">
+        SELECT r.REVIEW_ID,
+               r.REVIEW_MENU,
+               r.MEMBER_ID,
+               r.REVIEW_RATING,
+               r.REVIEW_CONTENT,
+               r.REVIEW_PHOTO,
+               r.REVIEW_CREATEDATE,
+               r.REVIEW_MODIFIED_DATE,
+               r.RESTAURANT_ID,
+               m.MEMBER_NICKNAME,
+               rc.REVIEWCOMMENT_CONTENT,
+               rc.REVIEWCOMMENT_ID,
+               rs.RESTAURANT_NAME
+        FROM review r
+                 LEFT JOIN member m
+                     ON r.member_id = m.member_id
+                 LEFT JOIN reviewcomment rc
+                     ON r.review_id = rc.review_id
+                 LEFT JOIN restaurant rs
+                     ON r.restaurant_id = rs.restaurant_id
+        WHERE
+            r.restaurant_id = #{restaurantId}
+        ORDER BY
+            r.REVIEW_ID DESC
+        LIMIT #{limit}
+        OFFSET #{offset}
+    </select>
+
+    <select id="selectReviewForMember" resultType="ReviewResponseDto">
+        SELECT rv.*, r.RESTAURANT_NAME, rc.REVIEWCOMMENT_CONTENT
+        FROM review rv
+        JOIN restaurant r ON rv.RESTAURANT_ID = r.RESTAURANT_ID
+        LEFT JOIN reviewcomment rc ON rv.REVIEW_ID = rc.REVIEW_ID
+        WHERE rv.MEMBER_ID = #{member_id};
+    </select>
+
+    <select id="getReviewCommentCount" resultType="Integer">
+        SELECT COUNT(rrc.review_id) AS reviewCommentCount
+        FROM reviewcomment rrc
+        INNER JOIN review r ON rrc.review_id = r.review_id
+        WHERE r.restaurant_id = #{restaurantId};
+    </select>
+
+    <delete id="deleteMyReview" parameterType="Long">
+        DELETE FROM review
+        WHERE REVIEW_ID  = #{reviewId};
+    </delete>
+
+</mapper>

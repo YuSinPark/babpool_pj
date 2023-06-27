@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.MenuOptionGroupMapper">
+    <insert id="addMenuOptionGroup">
+        INSERT INTO menuoptiongroup (MENUOPTION_ID, MENU_ID)
+        VALUES (#{menuOptionId}, #{menuId})
+    </insert>
+
+    <delete id="deleteMenuOptionGroup">
+        DELETE FROM menuoptiongroup
+        WHERE
+        MENU_ID = #{menuId}
+        AND
+        MENUOPTION_ID = #{menuOptionId}
+    </delete>
+</mapper>

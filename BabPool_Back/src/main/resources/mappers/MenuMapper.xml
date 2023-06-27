@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ca.babpool.mapper.MenuMapper">
+
+    <select id="selectMenuByRestaurantId" parameterType="Long" resultType="MenuDto">
+        SELECT
+            *
+        FROM
+            menu
+        WHERE
+             restaurant_Id = #{restaurantId}
+        And
+            menu_Status = "Y";
+    </select>
+    <select id="selectAllMenuByRestaurantId" parameterType="Long" resultType="MenuDto">
+        SELECT
+            *
+        FROM
+            menu
+        WHERE
+            RESTAURANT_ID = #{restaurantId}
+            order by MENU_GROUP;
+    </select>
+
+    <select id="selectHideOrSoldOutMenu" parameterType="Long" resultType="Menu">
+        SELECT
+            menu_Id,
+            menu_Name,
+            menu_Content,
+            menu_Price,
+            menu_Photo,
+            menu_Group,
+            menu_Status
+        FROM
+            menu
+        WHERE
+            restaurant_Id = #{restaurantId}
+        AND
+            menu_Status != "Y"
+    </select>
+
+    <update id="updateMenu" parameterType="Menu">
+        UPDATE
+            menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="menuCategory != null">menu_Category = #{menuCategory},</if>
+            <if test="menuName != null">menu_Name = #{menuName},</if>
+            <if test="menuContent != null">menu_Content = #{menuContent},</if>
+            <if test="menuPrice != null">menu_Price = #{menuPrice},</if>
+            <if test="menuStatus != null">menu_Status = #{menuStatus},</if>
+            <if test="menuPhoto != null">menu_Photo = #{menuPhoto},</if>
+            <if test="menuGroup != null">menu_Group = #{menuGroup},</if>
+            <if test="menuRepresentative != null">menu_Representative = #{menuRepresentative}</if>
+        </trim>
+        WHERE
+            menu_Id = #{menuId};
+    </update>
+
+    <insert id="insertMenu" parameterType="Menu">
+        INSERT INTO menu(
+                         restaurant_Id,
+                         menu_Name,
+                         menu_Content,
+                         menu_Price,
+                         menu_Status,
+                         menu_Photo,
+                         menu_Group,
+                         menu_Representative
+        )VALUES(
+             #{restaurantId},
+             #{menuName},
+             #{menuContent},
+             #{menuPrice},
+             "Y",
+             <if test="menuPhoto != null">#{menuPhoto},</if>
+             #{menuGroup},
+             0
+         );
+    </insert>
+
+    <select id="selectRepresentativeMenu" parameterType="Long" resultType="MenuDto">
+        SELECT
+            *
+        FROM
+            menu
+        WHERE
+            restaurant_Id = #{restaurantId}
+        AND
+            menu_Photo IS NOT NULL
+        AND
+            menu_Status = "Y"
+    </select>
+
+    <update id="updateRepresentativeMenu" parameterType="Long">
+        UPDATE menu
+        SET menu_Representative = CASE
+          WHEN menu_Representative = 1 THEN 0
+          ELSE 1
+        END
+        WHERE menu_Id = #{menuId}
+    </update>
+
+    <delete id="deleteMenuByMenuId" parameterType="Long">
+        DELETE FROM
+            menu
+        WHERE
+            menu_Id = #{menuId}
+    </delete>
+</mapper>
