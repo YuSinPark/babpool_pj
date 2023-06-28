@@ -151,7 +151,7 @@ const MenuList = ({ restaurantId, navigation, informations }) => {
 function MenuPrint(Data) {
     return (
         <div className='menu-item-div'> {/*여기가 가게 출력(!중요!클릭이벤트로 네비게이션)*/}
-            {Data.menuData.menuPhoto != null ? (<img src={Data.menuData.menuPhoto} alt="" width="60" height="60" />) : (<img src={empty} alt="" width="60" height="60" />)}
+            {Data.menuData.menuPhoto != null && Data.menuData.menuPhoto != "null" ? (<img src={Data.menuData.menuPhoto} alt="" width="60" height="60" />) : (<img src={empty} alt="" width="60" height="60" />)}
             <div className='menu-item-text'>
                 <div className='menu-item-text2'>
                     <div className='menu-item-text-name'>{Data.menuData.menuName}</div>

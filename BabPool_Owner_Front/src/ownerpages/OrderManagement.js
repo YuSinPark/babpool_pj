@@ -108,7 +108,7 @@ const OrderManagement = () => {
   }
   const handleRefund = (order) => {
     const tid = order.orderDetailsResponseDto.orderDetailsTID;
-    const amount = (Number(order.orderDetailsResponseDto.orderDetailsPrice) + Number(order.orderDetailsResponseDto.orderDetailsTip)) - (order.orderDetailsResponseDto.orderDetailsCoupon != null && (Number(order.orderDetailsResponseDto.orderDetailsCoupon)));
+    const amount = (Number(order.orderDetailsResponseDto.orderDetailsPrice) + Number(order.orderDetailsResponseDto.orderDetailsTip)) - ((order.orderDetailsResponseDto.orderDetailsCoupon != null && (Number(order.orderDetailsResponseDto.orderDetailsCoupon))) + (order.orderDetailsResponseDto.orderDetailsPoint != null && (Number(order.orderDetailsResponseDto.orderDetailsPoint))));
     const ordersId = order.orderDetailsResponseDto.ordersId;
     axios.get(`${process.env.REACT_APP_API_ROOT}/api/v1/payment/owner/cancel?tid=${tid}&amount=${amount}&ordersId=${ordersId}`,
       { headers: { Authorization: `Bearer ${token}` } })
